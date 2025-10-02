@@ -1,3 +1,6 @@
 /dataset
 /dataset_arctic_ice
 /dataset_arctic_sst
+*.npz
+*.gif
+*.pth

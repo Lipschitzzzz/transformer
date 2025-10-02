@@ -48,84 +48,20 @@ dataset2 = np.array(dataset2)
 print(dataset2.shape)
 # all_vars_info = list(all_vars_info)
 
-
-# 📁 加载 NetCDF 文件（请替换为你的文件路径）
-
-# ds1 = xr.open_dataset(filename)
-# offset = 273.15
-# N 33.10 -> 39.44           1324 -> 1577.6(1578)
-# E 122.90 -> 130.54         4916 -> 5221.6(5222)
-
-# dataset = ds1['analysed_sst'][0].values
-# print(type(dataset[n_start - 1:n_end, e_start - 1:e_end]))
-# print(dataset[n_start - 1:n_end, e_start - 1:e_end].shape)
-# print(ds2.variables)
-
-
-# # 🔁 如果经度是 0~360，想转为 -180~180
-# lons = (lons + 180) % 360 - 180
-
-# # 设置统一的颜色范围（可选，保持两个图颜色一致）
-# vmin = np.nanmin(dataset)
-# vmax = np.nanmax(dataset)
-
-# # 🌍 创建图形并设置 PlateCarree 投影
-# fig, ax = plt.subplots(1, 1, figsize=(18, 8), subplot_kw={'projection': ccrs.PlateCarree()})
-# # 设置地理特征
-# def add_features(ax):
-#     ax.add_feature(cfeature.COASTLINE)
-#     ax.add_feature(cfeature.BORDERS, linestyle=':')
-#     ax.add_feature(cfeature.LAND, color='lightgray')
-#     ax.gridlines(draw_labels=True)
-#     ax.set_extent([e_start, e_end, n_start, n_end], crs=ccrs.PlateCarree())
-
-# # 绘图函数
-# def plot_map(ax, data, title):
-#     c = ax.contourf(lons[e_start - 1:e_end], lats[n_start - 1:n_end], data[n_start - 1:n_end, e_start - 1:e_end], levels=20, cmap='viridis', vmin=vmin, vmax=vmax)
-#     ax.set_title(title)
-#     add_features(ax)
-#     return c
-
-# # 绘制两个子图
-# c = plot_map(ax, dataset, "Ocean SSH GLORYS12 Reanalysis")
-
-# # 🎨 添加统一颜色条在底部中央
-# cbar_ax = fig.add_axes([0.25, 0.1, 0.5, 0.02])  # [left, bottom, width, height]
-# cbar = fig.colorbar(c, cax=cbar_ax, orientation='horizontal', label='1')
-# cbar.ax.tick_params(labelsize=10)
-
-# # 📐 自动调整布局
-# plt.tight_layout(rect=[0, 0.1, 1, 1])  # 留出底部空间给颜色条
-# # plt.savefig("Ocean SSH Comparison.png")
-# plt.show()
 print("Min value:", np.nanmin(dataset))
 print("Max value:", np.nanmax(dataset))
 
-
-
-# 创建图形并设置 PlateCarree 投影
 fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': ccrs.PlateCarree()})
-
-# print(lons[e_start - 1:e_end])
-# print(lats[n_start - 1:n_end])
-# print(filtered_data)
-
 def add_features(ax):
     """添加地理特征"""
     ax.add_feature(cfeature.COASTLINE)
     ax.add_feature(cfeature.BORDERS, linestyle=':')
     ax.add_feature(cfeature.LAND, color='lightgray')
     ax.gridlines(draw_labels=True)
-    # 设置地图显示范围
     ax.set_extent([lons[e_start], lons[e_end - 1], lats[n_start], lats[n_end - 1]], crs=ccrs.PlateCarree())
-    # ax.set_extent([e_start, e_end, n_start, n_end], crs=ccrs.PlateCarree())
 lo = lons[e_start:e_end]
 la = lats[n_start:n_end]
 z = filtered_data
-
-# print(lo)
-# print(la)
-# print(z)
 def plot_map(ax, data, title):
     """绘图函数"""
     c = ax.contourf(lo, la, data, levels=20, cmap='viridis', vmin=vmin, vmax=vmax, transform=ccrs.Orthographic(0, 90))
@@ -136,9 +72,7 @@ def plot_map(ax, data, title):
 # 绘制单个地图
 # c = plot_map(ax, filtered_data, "Regional Ocean SSH GLORYS12 Reanalysis")
 
-# 添加统一颜色条在底部中央
 cbar_ax = fig.add_axes([0.25, 0.07, 0.5, 0.02])  # 调整了底部位置以适应标题和其他元素
-# 使用 pcolormesh 绘制第一帧
 
 ax.set_title(f"Sea Surface Temperature - Frame 0")
 ax.add_feature(cfeature.COASTLINE)
